@@ -17,6 +17,7 @@ declare type PropsType = {
     unselectedColor: string;
     selectedColor: string;
     hoveredColor: string;
+    blockDates: Array<number>;
     renderDateCell?: (datetime: Date, selected: boolean, refSetter: (dateCellElement: HTMLElement) => void) => JSX.Element;
     renderTimeLabel?: (time: Date) => JSX.Element;
     renderDateLabel?: (date: Date) => JSX.Element;
@@ -56,4 +57,4 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     renderFullDateGrid(): Array<JSX.Element>;
     render(): JSX.Element;
 }
-export {};
+export { };

@@ -82,6 +82,7 @@ type PropsType = {
   unselectedColor: string
   selectedColor: string
   hoveredColor: string
+  blockDates: Array<number>
   renderDateCell?: (datetime: Date, selected: boolean, refSetter: (dateCellElement: HTMLElement) => void) => JSX.Element
   renderTimeLabel?: (time: Date) => JSX.Element
   renderDateLabel?: (date: Date) => JSX.Element
@@ -128,7 +129,8 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     selectedColor: colors.blue,
     unselectedColor: colors.paleBlue,
     hoveredColor: colors.lightBlue,
-    onChange: () => {}
+    blockDates: [],
+    onChange: () => { }
   }
 
   static getDerivedStateFromProps(props: PropsType, state: StateType): Partial<StateType> | null {
@@ -373,13 +375,15 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
     }
   }
 
-  renderFullDateGrid(): Array<JSX.Element> {
+  renderFullDateGrid(blockDates: any): Array<JSX.Element> {
     const flattenedDates: Date[] = []
     const numDays = this.state.dates.length
     const numTimes = this.state.dates[0].length
     for (let j = 0; j < numTimes; j += 1) {
       for (let i = 0; i < numDays; i += 1) {
-        flattenedDates.push(this.state.dates[i][j])
+        if (!blockDates.contains(i)) {
+          flattenedDates.push(this.state.dates[i][j])
+        }
       }
     }
     const dateGridElements = flattenedDates.map(this.renderDateCellWrapper)
@@ -413,7 +417,7 @@ export default class ScheduleSelector extends React.Component<PropsType, StateTy
             this.gridRef = el
           }}
         >
-          {this.renderFullDateGrid()}
+          {this.renderFullDateGrid(this.props.blockDates)}
         </Grid>
       </Wrapper>
     )
